@@ -29,10 +29,10 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import pl.umk.mat.imare.exception.FileDoesNotExistException;
-import pl.umk.mat.imare.gui.related.ProgressListener;
 import pl.umk.mat.imare.io.Config;
 import pl.umk.mat.imare.io.FrameInfo;
 import pl.umk.mat.imare.io.LilySong;
+import pl.umk.mat.imare.io.ProgressListener;
 import pl.umk.mat.imare.io.ProjectData;
 import pl.umk.mat.imare.io.Wave;
 import pl.umk.mat.imare.reco.StaveData;
@@ -54,18 +54,17 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 	private WizardFrame wizardFrame = null;
 	private String[] recentProjects;
 	private ProjectPane projectProgressPane1 = new ProjectPane(this);
-
 	private ProgressFrame progressFrame = null;
 
 	/** Creates new form MainGUI */
 	public MainGUI(boolean canShowStartup) {
 		initAllComponents();
 //		setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
-		
+
 
 		startupFrame = new StartupFrame();
 
-		if(canShowStartup) {
+		if (canShowStartup) {
 			String[] s = Config.read("ShowStartupScreen");
 			if (s[0].equals("1")) {
 				startupFrame.setVisible(true);
@@ -90,7 +89,7 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 		}
 	}
 
-	public MainGUI(/*Wave wave, StaveData notes*/ File projectFile) {
+	public MainGUI(/*Wave wave, StaveData notes*/File projectFile) {
 		initAllComponents();
 
 		desktopPane.add(wavePlayerFrame);
@@ -529,10 +528,9 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 			}
 			Config.write("RecentWaveDirectory", fc.getCurrentDirectory().getPath());
 			Config.pushFront("RecentAudioFiles", fc.getSelectedFile().getAbsolutePath());
-			if(openedWave == null) {
+			if (openedWave == null) {
 				openAudioFile(f);
-			}
-			else {
+			} else {
 				MainGUI nwin = new MainGUI(false);
 				nwin.setVisible(true);
 				nwin.openAudioFile(f);
@@ -637,24 +635,23 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 		}
 
 //		wavePlayerFrame.setWave(null);
-		
+
 		final ProgressListener mainWindow = this;
 		Runnable r = new Runnable() {
 
 			@Override
 			public void run() {
 				try {
-					Wave.create(f, (listener==null ? mainWindow : listener));
+					Wave.create(f, (listener == null ? mainWindow : listener));
 				} catch (FileDoesNotExistException ex) {
-                                    JOptionPane.showMessageDialog(null,"Taki plik nie istnieje!", "Błąd", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Taki plik nie istnieje!", "Błąd", JOptionPane.ERROR_MESSAGE);
 				} catch (UnsupportedAudioFileException ex) {
-                                    JOptionPane.showMessageDialog(null, "Nieobsługiwany format pliku!", "Błąd", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Nieobsługiwany format pliku!", "Błąd", JOptionPane.ERROR_MESSAGE);
 				} catch (Exception ex) {
 
-                                    Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+					Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
 				}
 			}
-
 		};
 
 		Thread th = new Thread(r, "Audio Loading Thread");
@@ -703,17 +700,20 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 			Config.removeValue("RecentProjects", f.getAbsolutePath());
 			Config.write("RecentProjectDirectory", fc.getCurrentDirectory().getPath());
 			Config.pushFront("RecentProjects", fc.getSelectedFile().getAbsolutePath());
-			if(openedWave == null) openProject(file);
-			else new MainGUI(file).setVisible(projectSaved);
+			if (openedWave == null) {
+				openProject(file);
+			} else {
+				new MainGUI(file).setVisible(projectSaved);
+			}
 			enableSaveButtons();
 		}//GEN-LAST:event_miOpenProjectActionPerformed
 
 		private void miCloseProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCloseProjectActionPerformed
 
 			int result = JOptionPane.showConfirmDialog(this,
-						"Czy na pewno chcesz zamknąć projekt?",
-						"Zamknięcie projektu", JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
+					"Czy na pewno chcesz zamknąć projekt?",
+					"Zamknięcie projektu", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
 
 			switch (result) {
 				case -1:
@@ -722,7 +722,7 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 			}
 
 			if (!projectSaved && getOpenedWave() != null) {
-				
+
 				result = JOptionPane.showConfirmDialog(this,
 						"Projekt nie został zapisany. Czy zapisać go teraz?",
 						"Zapis projektu", JOptionPane.YES_NO_OPTION,
@@ -753,9 +753,12 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 //				}
 //			}
 
-			for(JInternalFrame f : desktopPane.getAllFrames()) {
-				if(f instanceof RealtimeFrame) f.dispose();
-				else f.hide();
+			for (JInternalFrame f : desktopPane.getAllFrames()) {
+				if (f instanceof RealtimeFrame) {
+					f.dispose();
+				} else {
+					f.hide();
+				}
 			}
 
 			layoutWindowsCascade();
@@ -774,12 +777,12 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
                 private void mRecentItemsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mRecentItemsStateChanged
 					mRecentItems.removeAll();
 					recentAudioFiles = Config.read("RecentAudioFiles");
-                                        //----------------------------------------------
-										// TODO: bb - poprawic trzeba (morti)
-                                        // TU MI TEŻ WYWALA wyjątek
-                                        // java.lang.ArrayIndexOutOfBoundsException: 0
+					//----------------------------------------------
+					// TODO: bb - poprawic trzeba (morti)
+					// TU MI TEŻ WYWALA wyjątek
+					// java.lang.ArrayIndexOutOfBoundsException: 0
 					if (recentAudioFiles[0].equals("0")) {
-                                        //--------------------------------------pieterer
+						//--------------------------------------pieterer
 						Config.write("RecentAudioFiles", "(puste)");
 						recentAudioFiles = Config.read("RecentAudioFiles");
 					} else {
@@ -813,7 +816,7 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 									public void actionPerformed(ActionEvent e) {
 										Config.removeValue("RecentAudioFiles", s);
 										Config.pushFront("RecentAudioFiles", s);
-										if(openedWave == null) {
+										if (openedWave == null) {
 											openAudioFile(new File(s));
 										} else {
 											MainGUI nwin = new MainGUI(false);
@@ -865,12 +868,12 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 									mRecentProjects.removeAll();
 									recentProjects = Config.read("RecentProjects");
 
-                                                                        //----------------------------------------------
-                                                                        // TU MI WYWALA wyjątek
-                                                                        // java.lang.ArrayIndexOutOfBoundsException: 0
+									//----------------------------------------------
+									// TU MI WYWALA wyjątek
+									// java.lang.ArrayIndexOutOfBoundsException: 0
 									if (recentProjects[0].equals("0")) {
-                                                                        // niech ktoś to wreszcie naprawi
-                                                                        //--------------------------------------pieterer
+										// niech ktoś to wreszcie naprawi
+										//--------------------------------------pieterer
 										Config.write("RecentProjects", "(puste)");
 										recentProjects = Config.read("RecentProjects");
 									} else {
@@ -964,8 +967,8 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 																			l.write(file);
 																		} catch (IOException ex) {
 																			//Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-																		  JOptionPane.showMessageDialog(null, "Nie można utworzyć pliku", "Nie można utworzyć pliku", JOptionPane.ERROR_MESSAGE);
-                                                                                                                                                }
+																			JOptionPane.showMessageDialog(null, "Nie można utworzyć pliku", "Nie można utworzyć pliku", JOptionPane.ERROR_MESSAGE);
+																		}
 																	}
                                                                 }//GEN-LAST:event_miLilypondActionPerformed
 
@@ -983,9 +986,9 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 
 																private void miExportToPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miExportToPDFActionPerformed
 																	if (noteFrame != null) {
-																		ProgressFrame prog=new ProgressFrame("Trwa eksportowanie...", null);
+																		ProgressFrame prog = new ProgressFrame("Trwa eksportowanie...", null);
 																		addFrame(prog, false);
-																	    noteFrame.exportPDF(prog);
+																		noteFrame.exportPDF(prog);
 																	}
 																}//GEN-LAST:event_miExportToPDFActionPerformed
 
@@ -1007,15 +1010,17 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 			ProjectData projectData = (ProjectData) in.readObject();
 			StaveData loadedNotes = (StaveData) in.readObject();
 
-			if (waveFile.exists()) {												
+			if (waveFile.exists()) {
 				setNotes(loadedNotes);
 
 				applyProjectData(projectData);
 
 				showWaveFrame();
-				if(loadedNotes != null) showNoteFrame();
+				if (loadedNotes != null) {
+					showNoteFrame();
+				}
 //				if(noteFrame.getLocation().equals(wavePlayerFrame.getLocation())) {
-					layoutWindowsVertically();
+				layoutWindowsVertically();
 //				}
 
 				openAudioFile(waveFile);
@@ -1050,7 +1055,7 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 		UIManager.put("FileChooser.cancelButtonText", "Anuluj");
 		UIManager.put("FileChooser.saveDialogTitleText", "Zapisywanie...");
 		UIManager.put("FileChooser.openDialogTitleText", "Otwieranie...");
-		
+
 		try {
 			Config.init();
 		} catch (IOException ex) {
@@ -1193,7 +1198,7 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 		wavePlayerFrame = null;
 		noteFrame = null;
 
-		
+
 	}
 
 	/**
@@ -1315,7 +1320,6 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 //			enableSaveButtons();
 //		}
 //	}
-
 	public NoteFrame getNoteFrame() {
 		return noteFrame;
 	}
@@ -1524,19 +1528,23 @@ public class MainGUI extends javax.swing.JFrame implements ProgressListener {
 
 	@Override
 	public void jobFinished(Object sender) {
-		if(!isDisplayable()) return;
-		progressFrame.jobFinished(sender);		
+		if (!isDisplayable()) {
+			return;
+		}
+		progressFrame.jobFinished(sender);
 
-		setOpenedWave((Wave)sender);
+		setOpenedWave((Wave) sender);
 
 		boolean wizard = false;
-		for(JInternalFrame f: desktopPane.getAllFrames()) {
-			if((f instanceof WizardFrame) && f.isVisible())
+		for (JInternalFrame f : desktopPane.getAllFrames()) {
+			if ((f instanceof WizardFrame) && f.isVisible()) {
 				wizard = true;
+			}
 		}
 
-		if(!wizard)
+		if (!wizard) {
 			showWaveFrame();
+		}
 
 		enableSaveButtons();
 

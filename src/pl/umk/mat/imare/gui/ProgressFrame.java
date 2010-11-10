@@ -17,7 +17,7 @@ import java.beans.PropertyVetoException;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import pl.umk.mat.imare.gui.related.ProgressListener;
+import pl.umk.mat.imare.io.ProgressListener;
 
 
 /**

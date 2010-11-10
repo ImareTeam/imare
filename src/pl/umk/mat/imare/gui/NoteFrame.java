@@ -39,7 +39,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JViewport;
-import pl.umk.mat.imare.gui.related.ProgressListener;
+import pl.umk.mat.imare.io.ProgressListener;
 import pl.umk.mat.imare.midi.MidiPlayer;
 import pl.umk.mat.imare.midi.MidiPlayerListener;
 import pl.umk.mat.imare.reco.StaveData;
