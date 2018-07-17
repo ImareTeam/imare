@@ -8,14 +8,25 @@ faculty competitions.
 
 The project's code is stored in three separate repositories:
 
-* **imare** with a full (original) version of the software, but maybe a little
-outdated
+* **[imare](https://github.com/ImareTeam/imare)**
+with a full (original) version of the software, but maybe a little outdated
 
-* **imare-lite** with a alternative version of a software with slightly limited
-functionality, but improved user interface and general usability
+* **[imare-lite](https://github.com/ImareTeam/imare-lite)**
+with a alternative version of a software with slightly limited functionality,
+but improved user interface and general usability
 
-* **audio-recognition-library** with a core library used by other two for audio
-processing and transcription
+* **[audio-recognition-library](https://github.com/ImareTeam/audio-recognition-library)**
+with a core library used by other two for audio processing and transcription
+
+Algorithm
+---------
+
+A summary of the implemented algorithm can be found in
+[the article](https://raw.githubusercontent.com/ImareTeam/audio-recognition-library/master/docs/imare-article-pl.pdf)
+published in the inter-disciplinary conference proceedings
+(ISBN 978-83-63058-00-5) or
+[the poster](https://raw.githubusercontent.com/ImareTeam/audio-recognition-library/master/docs/imare-poster-pl.pdf)
+presented at the same conference. Unfortunately, both materials are in Polish.
 
 Licence
 -------
